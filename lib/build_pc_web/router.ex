@@ -13,6 +13,15 @@ defmodule BuildPcWeb.Router do
     plug :accepts, ["json"]
   end
 
+  scope "/api", Api do
+    pipe_through :api
+    scope "/v1", V1 do
+      scope "/parts" do
+        post "/search-parts", PartsController, :search_parts 
+      end
+    end
+  end
+
   scope "/", BuildPcWeb do
     pipe_through :browser
 

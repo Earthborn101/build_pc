@@ -43,7 +43,15 @@ defmodule BuildPc.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:react_phoenix, "~> 1.2"}
+      {:react_phoenix, "~> 1.2"},
+      {:credo, "~> 0.8", only: [:dev, :test], runtime: false},
+      {:dogma, "~> 0.1", only: :dev},
+      {:sobelow, "~> 0.7", only: :dev},
+      {:ex_crypto, "~> 0.10.0"},
+      {:ex_doc, "~> 0.19", only: :dev, runtime: false},
+      {:dialyxir, "~> 1.0.0-rc.6", only: [:dev], runtime: false},
+      {:timex, "~> 3.1"},
+      {:ex_machina, "~> 2.3", only: [:test, :dev], runtime: false}
     ]
   end
 

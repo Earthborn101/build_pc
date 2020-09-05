@@ -22,18 +22,19 @@ defmodule BuildPcWeb.ConnCase do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
       alias BuildPcWeb.Router.Helpers, as: Routes
+      use BuildPcWeb.SchemaCase
 
       # The default endpoint for testing
       @endpoint BuildPcWeb.Endpoint
     end
   end
 
-  setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(BuildPc.Repo)
+  setup _tags do
+    # :ok = Ecto.Adapters.SQL.Sandbox.checkout(BuildPc.Repo)
 
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(BuildPc.Repo, {:shared, self()})
-    end
+    # unless tags[:async] do
+    #   Ecto.Adapters.SQL.Sandbox.mode(BuildPc.Repo, {:shared, self()})
+    # end
 
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
