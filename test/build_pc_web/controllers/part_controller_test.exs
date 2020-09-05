@@ -128,6 +128,32 @@ defmodule BuildPcWeb.PartControllerTest do
             assert count == 4
         end
 
+        test "Valid Params/ with search value" do
+            params = %{
+                search_value: "amd",
+                types: [],
+                part_types: [],
+                specific_part: "",
+                specific_part_types: [],
+                min_data: "",
+                max_data: "",
+                brands: [],
+                min_price: "",
+                max_price: "",
+                page_number: "1",
+                display_per_page: "10",
+                order_by: "asc",
+                sort_by: "name"
+            }
+
+            conn = post(build_conn(), "/api/v1/parts/search-parts", params)
+            response = json_response(conn, 200)
+            search_result = response["search_result"]
+            count = response["total_count"]
+            assert List.first(search_result)["name"] == "AMD RYZEN 9 3950X"
+            assert count == 1
+        end
+
         test "Valid Params/with Min Price" do
             params = %{
                 search_value: "",
@@ -228,6 +254,58 @@ defmodule BuildPcWeb.PartControllerTest do
             count = response["total_count"]
             assert List.first(search_result)["name"] == "SAPPHIRE NITRO+ RX 5700 XT 8G GDDR6"
             assert count == 1
+        end
+
+        test "Invalid Params/Enter required" do
+            params = %{
+                search_value: "",
+                types: [],
+                part_types: [],
+                specific_part: "",
+                specific_part_types: [],
+                min_data: "",
+                max_data: "",
+                brands: [],
+                min_price: "",
+                max_price: "",
+                page_number: "",
+                display_per_page: "",
+                order_by: "",
+                sort_by: ""
+            }
+
+            conn = post(build_conn(), "/api/v1/parts/search-parts", params)
+            response = json_response(conn, 200)["errors"]
+            assert response["display_per_page"] == "Enter display per page"
+            assert response["order_by"] == "Enter order by"
+            assert response["page_number"] == "Enter page number"
+            assert response["sort_by"] == "Enter sort by"
+        end
+
+        test "Invalid Params/Invalid params" do
+            params = %{
+                search_value: "",
+                types: [],
+                part_types: [],
+                specific_part: "",
+                specific_part_types: [],
+                min_data: "",
+                max_data: "",
+                brands: [],
+                min_price: "",
+                max_price: "",
+                page_number: "fd",
+                display_per_page: "fd",
+                order_by: "fd",
+                sort_by: "fd"
+            }
+
+            conn = post(build_conn(), "/api/v1/parts/search-parts", params)
+            response = json_response(conn, 200)["errors"]
+            assert response["display_per_page"] == "Display per page is invalid"
+            assert response["order_by"] == "Order by is invalid. Allowed values ['asc', 'desc']"
+            assert response["page_number"] == "Page number is invalid"
+            assert response["sort_by"] == "Sort by is invalid. Allowed values ['brand_name', 'name', 'price']"
         end
     end
   end

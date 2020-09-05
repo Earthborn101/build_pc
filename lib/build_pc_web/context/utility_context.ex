@@ -50,6 +50,7 @@ defmodule Contexts.UtilityContext do
     defp transform_required(key, "is required"), do: "Enter #{key}"
     defp transform_required(key, "Select"), do: "Select #{transform_atom(key)}"
     defp transform_required(key, "Enter"), do: "Enter #{transform_atom(key)}"
+    defp transform_required(key, "is invalid"), do: "#{transform_atom(key)} is invalid"
     defp transform_required(_key, message), do: message 
 
     defp transform_atom(key) do
@@ -57,6 +58,7 @@ defmodule Contexts.UtilityContext do
         |> atom_to_string()
         |> String.split("_")
         |> Enum.join(" ")
+        |> String.capitalize()
     end
     
     defp atom_to_string(data) do
